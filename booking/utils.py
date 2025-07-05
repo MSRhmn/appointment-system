@@ -22,7 +22,7 @@ def get_available_slots(date, service_id, staff=None):
         is_active=True,
     )
 
-    if staff:
+    if staff is not None:
         availability_qs = availability_qs.filter(staff=staff)
     else:
         availability_qs = availability_qs.filter(staff__isnull=True)
