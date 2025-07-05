@@ -43,15 +43,19 @@ def get_available_slots(date, service_id, staff=None):
 
 
 def is_slot_conflicted(date, start_time, staff=None):
-    """Check if a slot is already booked for given date and staff."""
+    filters = {
+        "date": date,
+        "start_time": start_time,
+    }
+
     if staff is not None:
-        conflict_exists = Booking.objects.filter(
-            staff=staff, date=date, start_time=slot_start
-        ).exists()
+        filters["staff"] = staff
     else:
-        conflict_exists = Booking.objects.filter(
-            staff__isnull=True, date=date, start_time=slot_start
-        ).exists()
+        filters["staff__isnull"] = True
+
+    return Booking.objects.filter(**filters).exists()
+    # Debug
+    print(Booking.objects.filter(**filters).query)
 
 
 def create_booking(
