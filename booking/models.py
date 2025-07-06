@@ -51,7 +51,7 @@ class AvailabilityRule(models.Model):
 # Main booking model
 class Booking(models.Model):
     service = models.ForeignKey(Service, on_delete=models.CASCADE)
-    staff = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True, blank=True)
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
     customer_name = models.CharField(max_length=100)
     customer_email = models.EmailField()
     date = models.DateField()
@@ -59,7 +59,12 @@ class Booking(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("staff", "date", "start_time")  # Prevent double booking
+        constraints = [
+            models.UniqueConstraint(
+                fields=["staff", "date", "start_time"],
+                name="unique_booking_per_slot"
+            )
+        ]
 
     def __str__(self):
         return f"{self.customer_name} - {self.service.name} on {self.date} at {self.start_time}"
