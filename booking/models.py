@@ -13,7 +13,6 @@ class Service(models.Model):
         return self.name
 
 
-# For single-provider systems, Staff can be skipped
 class Staff(models.Model):
     name = models.CharField(max_length=100)
     email = models.EmailField(blank=True, null=True)
@@ -35,16 +34,14 @@ class AvailabilityRule(models.Model):
         (6, "Sunday"),
     ]
 
-    staff = models.ForeignKey(
-        Staff, on_delete=models.CASCADE, null=True, blank=True
-    )  # Null for solo provider
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
     day_of_week = models.IntegerField(choices=DAY_CHOICES)
     start_time = models.TimeField()
     end_time = models.TimeField()
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        staff_name = self.staff.name if self.staff else "Solo Provider"
+        staff_name = self.staff.name
         return f"{staff_name} - {self.get_day_of_week_display()} {self.start_time} to {self.end_time}"
 
 
@@ -58,11 +55,11 @@ class Booking(models.Model):
     start_time = models.TimeField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # Prevents duplicate data storing
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=["staff", "date", "start_time"],
-                name="unique_booking_per_slot"
+                fields=["staff", "date", "start_time"], name="unique_booking_per_slot"
             )
         ]
 
