@@ -27,7 +27,6 @@ def get_available_slots(date, service_id, staff):
     # Calculate current datetime
     now = timezone.localtime().time() if date == timezone.localdate() else None
 
-
     for rule in availability_qs:
         current_start = datetime.combine(date, rule.start_time)
         end_time = datetime.combine(date, rule.end_time)
@@ -70,3 +69,12 @@ def create_booking(service, customer_name, customer_email, date, start_time, sta
         )
     except IntegrityError:
         raise ("This time slot is already booked!")
+
+
+def get_available_staff(date):
+    """
+    Returns all staff who have availability rules for given date.
+    """
+    return Staff.objects.filter(
+        availabilityrule__day_of_week=date.weekday(), availabilityrule__is_active=True
+    ).distinct()
