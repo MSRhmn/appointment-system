@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta, time
 from django.utils import timezone
+from django.db import IntegrityError
 from .models import AvailabilityRule, Booking, Service, Staff
 
 
-def get_available_slots(date, service_id, staff=None):
+def get_available_slots(date, service_id, staff):
     """
-    Returns list of available start times for given date, service, and staff (optional for solo providers).
+    Returns list of available start times for given date, service, and staff.
     """
     slots = []
 
@@ -16,16 +17,16 @@ def get_available_slots(date, service_id, staff=None):
 
     service_duration = timedelta(minutes=service.duration_minutes)
 
-    # Filter rules for given staff or solo mode
+    # Filter availability for this staff on the given weekday
     availability_qs = AvailabilityRule.objects.filter(
+        staff=staff,
         day_of_week=date.weekday(),
         is_active=True,
     )
 
-    if staff is not None:
-        availability_qs = availability_qs.filter(staff=staff)
-    else:
-        availability_qs = availability_qs.filter(staff__isnull=True)
+    # Calculate current datetime
+    now = timezone.localtime().time() if date == timezone.localdate() else None
+
 
     for rule in availability_qs:
         current_start = datetime.combine(date, rule.start_time)
@@ -33,8 +34,15 @@ def get_available_slots(date, service_id, staff=None):
 
         while current_start + service_duration <= end_time:
             slot_start = current_start.time()
+            # Skip expired slots for today
+            if now and slot_start <= now:
+                current_start += service_duration
+                continue
 
-            if not is_slot_conflicted(date, slot_start, staff):
+            # Only show if not already booked
+            if not Booking.objects.filter(
+                staff=staff, date=date, start_time=slot_start
+            ).exists():
                 slots.append(slot_start.strftime("%H:%M"))
 
             current_start += service_duration
@@ -42,36 +50,23 @@ def get_available_slots(date, service_id, staff=None):
     return slots
 
 
-def is_slot_conflicted(date, start_time, staff=None):
-    filters = {
-        "date": date,
-        "start_time": start_time,
-    }
-
-    if staff is not None:
-        filters["staff"] = staff
-    else:
-        filters["staff__isnull"] = True
-
-    return Booking.objects.filter(**filters).exists()
-    # Debug
-    print(Booking.objects.filter(**filters).query)
-
-
-def create_booking(
-    service, customer_name, customer_email, date, start_time, staff=None
-):
+def create_booking(service, customer_name, customer_email, date, start_time, staff):
     """
-    Safely create a booking with overlap prevention for both solo-provider and multi-staff.
+    Safely create a booking only if within allowed available slots.
     """
-    if is_slot_conflicted(date, start_time, staff):
-        raise Exception("This time slot is already booked!")
+    available_slots = get_available_slots(date, service.id, staff)
 
-    return Booking.objects.create(
-        service=service,
-        staff=staff,
-        customer_name=customer_name,
-        customer_email=customer_email,
-        date=date,
-        start_time=start_time,
-    )
+    if start_time.strftime("%H:%M") not in available_slots:
+        raise Exception("This time slot is not available for booking.")
+
+    try:
+        return Booking.objects.create(
+            service=service,
+            staff=staff,
+            customer_name=customer_name,
+            customer_email=customer_email,
+            date=date,
+            start_time=start_time,
+        )
+    except IntegrityError:
+        raise ("This time slot is already booked!")
