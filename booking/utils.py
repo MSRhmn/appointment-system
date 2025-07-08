@@ -55,6 +55,9 @@ def create_booking(service, customer_name, customer_email, date, start_time, sta
     Attempts to create a booking; relies on available slots and DB constraints to prevent conflicts.
     Raises IntegrityError if slot is already booked.
     """
+    if date < timezone.localdate():
+        raise Exception("Cannot book a past date.")
+
     available_slots = get_available_slots(date, service.id, staff)
 
     if start_time.strftime("%H:%M") not in available_slots:
