@@ -6,7 +6,8 @@ from .models import AvailabilityRule, Booking, Service, Staff
 
 def get_available_slots(date, service_id, staff):
     """
-    Returns list of available start times for given date, service, and staff.
+    Returns list of available start times for a given date, service, and staff.
+    Only shows slots where no existing booking exists.
     """
     slots = []
 
@@ -51,7 +52,8 @@ def get_available_slots(date, service_id, staff):
 
 def create_booking(service, customer_name, customer_email, date, start_time, staff):
     """
-    Safely create a booking only if within allowed available slots.
+    Attempts to create a booking; relies on available slots and DB constraints to prevent conflicts.
+    Raises IntegrityError if slot is already booked.
     """
     available_slots = get_available_slots(date, service.id, staff)
 
