@@ -43,7 +43,9 @@ def available_slots_api(request):
     try:
         date_obj = datetime.strptime(date_str, "%Y-%m-%d").date()
     except ValueError:
-        return JsonResponse({"error": "Invalid date format, use YYYY-MM-DD"}, status=400)
+        return JsonResponse(
+            {"error": "Invalid date format, use YYYY-MM-DD"}, status=400
+        )
 
     if date_obj < timezone.localdate():
         return JsonResponse({"slots": []})
@@ -61,6 +63,7 @@ def available_slots_api(request):
 @csrf_exempt
 @require_POST
 def book_appointment_api(request):
+    """API to create bookings. Returns booking id and success message else responses with specific error message."""
     try:
         data = json.loads(request.body)
         service_id = data.get("service_id")
@@ -72,7 +75,9 @@ def book_appointment_api(request):
     except (json.JSONDecodeError, TypeError):
         return JsonResponse({"error": "Invalid JSON"}, status=400)
 
-    if not all([service_id, staff_id, customer_name, customer_email, date_str, start_time_str]):
+    if not all(
+        [service_id, staff_id, customer_name, customer_email, date_str, start_time_str]
+    ):
         return JsonResponse({"error": "Missing required fields"}, status=400)
 
     try:
@@ -102,3 +107,9 @@ def book_appointment_api(request):
         return JsonResponse({"success": True, "booking_id": booking.id})
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
+
+
+def services_api(request):
+    """Returns all the services with name, duration, price and a specific id."""
+    services = Service.objects.all().values("id", "name", "duration_minutes", "price")
+    return JsonResponse({"services": list(services)})
