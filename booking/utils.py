@@ -39,15 +39,35 @@ def get_available_slots(date, service_id, staff):
                 current_start += service_duration
                 continue
 
-            # Only show if not already booked
-            if not Booking.objects.filter(
-                staff=staff, date=date, start_time=slot_start
-            ).exists():
+            # Only show slots if not already booked
+            if not is_slot_conflicted(date, slot_start, service_duration, staff):
                 slots.append(slot_start.strftime("%H:%M"))
 
             current_start += service_duration
 
     return slots
+
+
+def is_slot_conflicted(date, slot_start_time, service_duration, staff):
+    """
+    Check if a given time range overlaps with existing bookings for a staff member.
+    """
+    slot_start_dt = datetime.combine(date, slot_start_time)
+    slot_end_dt = slot_start_dt + service_duration
+
+    # Fetch all bookings on that date and staff
+    bookings = Booking.objects.filter(date=date, staff=staff)
+
+    for booking in bookings:
+        booking_start_dt = datetime.combine(date, booking.start_time)
+        booking_end_dt = booking_start_dt + timedelta(
+            minutes=booking.service.duration_minutes
+        )
+
+        if slot_start_dt < booking_end_dt and slot_end_dt > booking_start_dt:
+            return True
+
+    return False
 
 
 def create_booking(service, customer_name, customer_email, date, start_time, staff):
