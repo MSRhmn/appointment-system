@@ -27,6 +27,7 @@ def get_available_slots(date, service_id, staff):
 
     # Calculate current datetime
     now = timezone.localtime().time() if date == timezone.localdate() else None
+    STEP = timedelta(minutes=15) # smaller, fixed steps for slots time checking
 
     for rule in availability_qs:
         current_start = datetime.combine(date, rule.start_time)
@@ -36,14 +37,14 @@ def get_available_slots(date, service_id, staff):
             slot_start = current_start.time()
             # Skip expired slots for today
             if now and slot_start <= now:
-                current_start += service_duration
+                current_start += STEP
                 continue
 
             # Only show slots if not already booked
             if not is_slot_conflicted(date, slot_start, service_duration, staff):
                 slots.append(slot_start.strftime("%H:%M"))
 
-            current_start += service_duration
+            current_start += STEP
 
     return slots
 
