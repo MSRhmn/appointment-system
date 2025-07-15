@@ -27,7 +27,7 @@ def get_available_slots(date, service_id, staff):
 
     # Calculate current datetime
     now = timezone.localtime().time() if date == timezone.localdate() else None
-    STEP = timedelta(minutes=15) # smaller, fixed steps for slots time checking
+    STEP = timedelta(minutes=15)  # smaller, fixed steps for slots time checking
 
     for rule in availability_qs:
         current_start = datetime.combine(date, rule.start_time)
