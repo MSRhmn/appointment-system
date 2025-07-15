@@ -8,6 +8,7 @@ class Service(models.Model):
     description = models.TextField(blank=True)
     duration_minutes = models.PositiveIntegerField()  # How long it takes
     price = models.DecimalField(max_digits=8, decimal_places=2)
+    buffer_minutes = models.PositiveIntegerField(default=0)  # Optional buffer time
 
     def __str__(self):
         return self.name
