@@ -17,6 +17,8 @@ def get_available_slots(date, service_id, staff):
         return slots
 
     service_duration = timedelta(minutes=service.duration_minutes)
+    buffer_duration = timedelta(minutes=service.buffer_minutes or 0)
+    total_required_time = service_duration + buffer_duration
 
     # Filter availability for this staff on the given weekday
     availability_qs = AvailabilityRule.objects.filter(
@@ -27,13 +29,13 @@ def get_available_slots(date, service_id, staff):
 
     # Calculate current datetime
     now = timezone.localtime().time() if date == timezone.localdate() else None
-    STEP = timedelta(minutes=15)  # smaller, fixed steps for slots time checking
+    STEP = timedelta(minutes=5)  # smaller, fixed steps for slots time checking
 
     for rule in availability_qs:
         current_start = datetime.combine(date, rule.start_time)
         end_time = datetime.combine(date, rule.end_time)
 
-        while current_start + service_duration <= end_time:
+        while current_start + total_required_time <= end_time:
             slot_start = current_start.time()
             # Skip expired slots for today
             if now and slot_start <= now:
@@ -41,7 +43,7 @@ def get_available_slots(date, service_id, staff):
                 continue
 
             # Only show slots if not already booked
-            if not is_slot_conflicted(date, slot_start, service_duration, staff):
+            if not is_slot_conflicted(date, slot_start, total_required_time, staff):
                 slots.append(slot_start.strftime("%H:%M"))
 
             current_start += STEP
