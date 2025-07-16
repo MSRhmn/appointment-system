@@ -54,6 +54,7 @@ class Booking(models.Model):
     customer_email = models.EmailField()
     date = models.DateField()
     start_time = models.TimeField()
+    end_time = models.TimeField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     # Prevents duplicate data storing
