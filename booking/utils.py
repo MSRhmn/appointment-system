@@ -86,6 +86,12 @@ def create_booking(service, customer_name, customer_email, date, start_time, sta
     if start_time.strftime("%H:%M") not in available_slots:
         raise Exception("This time slot is not available for booking.")
 
+    total_duration = timedelta(
+        minutes=service.duration_minutes + service.buffer_minutes
+    )
+    start_dt = datetime.combine(date, start_time)
+    end_time = (start_dt + total_duration).time()
+
     try:
         return Booking.objects.create(
             service=service,
@@ -94,6 +100,7 @@ def create_booking(service, customer_name, customer_email, date, start_time, sta
             customer_email=customer_email,
             date=date,
             start_time=start_time,
+            end_time=end_time,
         )
     except IntegrityError:
         raise ("This time slot is already booked!")
