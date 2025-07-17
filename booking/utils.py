@@ -64,7 +64,7 @@ def is_slot_conflicted(date, slot_start_time, service_duration, staff):
     for booking in bookings:
         booking_start_dt = datetime.combine(date, booking.start_time)
         booking_end_dt = booking_start_dt + timedelta(
-            minutes=booking.service.duration_minutes
+            minutes=booking.service.duration_minutes + booking.service.buffer_minutes
         )
 
         if slot_start_dt < booking_end_dt and slot_end_dt > booking_start_dt:
