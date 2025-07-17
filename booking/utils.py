@@ -51,12 +51,12 @@ def get_available_slots(date, service_id, staff):
     return slots
 
 
-def is_slot_conflicted(date, slot_start_time, service_duration, staff):
+def is_slot_conflicted(date, slot_start_time, slot_total_duration, staff):
     """
     Check if a given time range overlaps with existing bookings for a staff member.
     """
     slot_start_dt = datetime.combine(date, slot_start_time)
-    slot_end_dt = slot_start_dt + service_duration
+    slot_end_dt = slot_start_dt + slot_total_duration
 
     # Fetch all bookings on that date and staff
     bookings = Booking.objects.filter(date=date, staff=staff)
