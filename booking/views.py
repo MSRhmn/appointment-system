@@ -5,11 +5,13 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from django.utils import timezone
 from django.http import JsonResponse
+from django.shortcuts import render
 
 from booking.utils import get_available_staff, get_available_slots, create_booking
 from booking.models import Staff, Service
 
 
+# apis
 def available_staff_api(request):
     """
     API to return available staff for a given date.
@@ -113,3 +115,8 @@ def services_api(request):
     """Returns all the services with name, duration, price and a specific id."""
     services = Service.objects.all().values("id", "name", "duration_minutes", "price")
     return JsonResponse({"services": list(services)})
+
+
+# template views
+def booking_page(request):
+    return render("booking/booking_form.html")
