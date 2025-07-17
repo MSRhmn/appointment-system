@@ -119,4 +119,4 @@ def services_api(request):
 
 # template views
 def booking_page(request):
-    return render("booking/booking_form.html")
+    return render(request, "booking/booking_form.html")
