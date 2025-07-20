@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
           data.slots.forEach((slot) => {
             const option = document.createElement("option");
             option.value = slot;
-            option.textContent = `${slot} — ${addMinutesToTime(slot, totalDuration)}`;
+            option.textContent = `${slot} — ${addMinutesToTime(slot, selectedService.duration_minutes)} (${selectedService.duration_minutes} mins)`;
             option.dataset.staffId = data.staff.id;
             option.dataset.staffName = data.staff.name;
             slotsSelect.appendChild(option);
