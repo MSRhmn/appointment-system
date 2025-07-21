@@ -57,27 +57,77 @@ document.addEventListener("DOMContentLoaded", () => {
           slotsSelect.innerHTML = `<option value="">No slots available</option>`;
           staffNameDisplay.textContent = "--";
         } else {
+          // Filter slots based on service duration + buffer
+          const filteredSlots = [];
+          let lastSlotMinutes = -Infinity;
+  
           data.slots.forEach((slot) => {
-            const option = document.createElement("option");
-            option.value = slot;
-            option.textContent = `${slot} — ${addMinutesToTime(slot, selectedService.duration_minutes)} (${selectedService.duration_minutes} mins)`;
-            option.dataset.staffId = data.staff.id;
-            option.dataset.staffName = data.staff.name;
-            slotsSelect.appendChild(option);
-  
-            console.log("Slot:", slot, "Total Duration:", totalDuration);
+            const currentSlotMinutes = timeToMinutes(slot);
+            
+            // Check spacing AND availability for full service duration
+            if (currentSlotMinutes - lastSlotMinutes >= totalDuration && 
+                canFitService(data.slots, slot, totalDuration)) {
+              filteredSlots.push(slot);
+              lastSlotMinutes = currentSlotMinutes;
+            }
           });
-  
-          if (data.staff) {
-            staffNameDisplay.textContent = data.staff.name;
-            slotsSelect.dataset.staffId = data.staff.id;
-            slotsSelect.dataset.staffName = data.staff.name;
+
+          if (filteredSlots.length === 0) {
+            slotsSelect.innerHTML = `<option value="">No suitable slots available for this service</option>`;
+            staffNameDisplay.textContent = "--";
+          } else {
+            filteredSlots.forEach((slot) => {
+              const option = document.createElement("option");
+              option.value = slot;
+              const buffer = selectedService.buffer_minutes || 0;
+              const total = selectedService.duration_minutes + buffer;
+              option.textContent = `${slot} — ${addMinutesToTime(slot, total)} (${selectedService.duration_minutes} mins + ${buffer} buffer)`;
+              option.dataset.staffId = data.staff.id;
+              option.dataset.staffName = data.staff.name;
+              slotsSelect.appendChild(option);
+
+              console.log("Filtered Slot:", slot, "Total Duration:", totalDuration);
+            });
+
+            if (data.staff) {
+              staffNameDisplay.textContent = data.staff.name;
+              slotsSelect.dataset.staffId = data.staff.id;
+              slotsSelect.dataset.staffName = data.staff.name;
+            }
           }
         }
       })
       .catch((error) => {
         console.error("Error fetching available slots:", error);
       });
+  }
+
+  // Helper function to convert time string to minutes
+  function timeToMinutes(timeStr) {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
+  }
+
+  // Helper function to convert minutes to time string
+  function minutesToTime(minutes) {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
+  }
+
+  // Check if service can fit at a specific start time
+  function canFitService(availableSlots, startSlot, serviceDurationMinutes) {
+    const startMinutes = timeToMinutes(startSlot);
+    const slotsNeeded = Math.ceil(serviceDurationMinutes / 5); // 5-minute backend intervals
+    
+    // Check if we have consecutive 5-minute slots for the entire duration
+    for (let i = 0; i < slotsNeeded; i++) {
+      const requiredTime = minutesToTime(startMinutes + (i * 5));
+      if (!availableSlots.includes(requiredTime)) {
+        return false; // Missing a required slot
+      }
+    }
+    return true;
   }
   
 
