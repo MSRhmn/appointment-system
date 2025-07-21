@@ -79,9 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
             filteredSlots.forEach((slot) => {
               const option = document.createElement("option");
               option.value = slot;
-              const buffer = selectedService.buffer_minutes || 0;
-              const total = selectedService.duration_minutes + buffer;
-              option.textContent = `${slot} — ${addMinutesToTime(slot, total)} (${selectedService.duration_minutes} mins + ${buffer} buffer)`;
+              option.textContent = `${slot} — ${addMinutesToTime(slot, selectedService.duration_minutes)} (${selectedService.duration_minutes} mins)`;
               option.dataset.staffId = data.staff.id;
               option.dataset.staffName = data.staff.name;
               slotsSelect.appendChild(option);
