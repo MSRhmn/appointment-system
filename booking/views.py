@@ -100,7 +100,9 @@ def book_appointment_api(request):
 
 def services_api(request):
     """Returns all the services with name, duration, price and a specific id."""
-    services = Service.objects.all().values("id", "name", "duration_minutes", "price", "buffer_minutes")
+    services = Service.objects.all().values(
+        "id", "name", "duration_minutes", "price", "buffer_minutes"
+    )
     return JsonResponse({"services": list(services)})
 
 
