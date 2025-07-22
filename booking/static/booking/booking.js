@@ -96,13 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.error("Error fetching available slots:", error);
       });
   }
-
-  // Helper function to convert time string to minutes
-  function timeToMinutes(timeStr) {
-    const [hours, minutes] = timeStr.split(':').map(Number);
-    return hours * 60 + minutes;
-  }
-
+ 
   serviceSelect.addEventListener("change", loadAvailableSlots);
   dateInput.addEventListener("change", loadAvailableSlots);
 
@@ -167,4 +161,10 @@ function addMinutesToTime(timeStr, minutesToAdd) {
   date.setHours(hours, minutes);
   date.setMinutes(date.getMinutes() + minutesToAdd);
   return date.toTimeString().slice(0, 5);
+}
+
+// Helper function to convert time string to minutes
+function timeToMinutes(timeStr) {
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  return hours * 60 + minutes;
 }
