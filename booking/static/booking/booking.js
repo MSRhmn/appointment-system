@@ -103,29 +103,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return hours * 60 + minutes;
   }
 
-  // Helper function to convert minutes to time string
-  function minutesToTime(minutes) {
-    const hours = Math.floor(minutes / 60);
-    const mins = minutes % 60;
-    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
-  }
-
-  // Check if service can fit at a specific start time
-  function canFitService(availableSlots, startSlot, serviceDurationMinutes) {
-    const startMinutes = timeToMinutes(startSlot);
-    const slotsNeeded = Math.ceil(serviceDurationMinutes / 5); // 5-minute backend intervals
-    
-    // Check if we have consecutive 5-minute slots for the entire duration
-    for (let i = 0; i < slotsNeeded; i++) {
-      const requiredTime = minutesToTime(startMinutes + (i * 5));
-      if (!availableSlots.includes(requiredTime)) {
-        return false; // Missing a required slot
-      }
-    }
-    return true;
-  }
-  
-
   serviceSelect.addEventListener("change", loadAvailableSlots);
   dateInput.addEventListener("change", loadAvailableSlots);
 
