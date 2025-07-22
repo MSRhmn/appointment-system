@@ -83,8 +83,6 @@ document.addEventListener("DOMContentLoaded", () => {
               option.dataset.staffId = data.staff.id;
               option.dataset.staffName = data.staff.name;
               slotsSelect.appendChild(option);
-
-              console.log("Filtered Slot:", slot, "Total Duration:", totalDuration);
             });
 
             if (data.staff) {
