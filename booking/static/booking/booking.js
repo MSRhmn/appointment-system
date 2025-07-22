@@ -65,8 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const currentSlotMinutes = timeToMinutes(slot);
             
             // Check spacing AND availability for full service duration
-            if (currentSlotMinutes - lastSlotMinutes >= totalDuration && 
-                canFitService(data.slots, slot, totalDuration)) {
+            if (currentSlotMinutes - lastSlotMinutes >= totalDuration) {
               filteredSlots.push(slot);
               lastSlotMinutes = currentSlotMinutes;
             }
