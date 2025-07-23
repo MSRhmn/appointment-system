@@ -1,3 +1,5 @@
+import { addMinutesToTime, timeToMinutes } from "./utils.js";
+
 document.addEventListener("DOMContentLoaded", () => {
   const serviceSelect = document.getElementById("service");
   const dateInput = document.getElementById("date");
@@ -153,18 +155,3 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 });
-
-
-function addMinutesToTime(timeStr, minutesToAdd) {
-  const [hours, minutes] = timeStr.split(":").map(Number);
-  const date = new Date();
-  date.setHours(hours, minutes);
-  date.setMinutes(date.getMinutes() + minutesToAdd);
-  return date.toTimeString().slice(0, 5);
-}
-
-// Helper function to convert time string to minutes
-function timeToMinutes(timeStr) {
-  const [hours, minutes] = timeStr.split(':').map(Number);
-  return hours * 60 + minutes;
-}
