@@ -9,8 +9,14 @@ class ServiceAdmin(admin.ModelAdmin):
     list_editable = ("price",)
 
 
+class AvailabilityInline(admin.TabularInline):
+    model = AvailabilityRule
+    extra = 0
+
+
 @admin.register(Staff)
 class StaffAdmin(admin.ModelAdmin):
+    inlines = [AvailabilityInline]
     list_display = ("name", "email", "is_active")
     list_filter = ("is_active",)
     search_fields = ("name", "email")
