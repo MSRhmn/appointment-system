@@ -6,6 +6,7 @@ from .models import Service, Staff, AvailabilityRule, Booking
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ("name", "duration_minutes", "price")
     search_fields = ("name",)
+    list_editable = ("price",)
 
 
 @admin.register(Staff)
