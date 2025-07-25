@@ -14,48 +14,50 @@
   <div class="container">
     <div class="row">
       <div class="col-12 col-md-8 col-lg-6 mx-auto">
-        
-        <h2 class="mb-4">Book an Appointment</h2>
+        <div class="card shadow-sm p-4">
 
-        <form id="booking-form">
-            <div class="mb-3">
-                <label for="service" class="form-label">Select Service</label>
-                <select id="service" name="service_id" class="form-select" required>
-                    <option value="">Loading services...</option>
-                </select>
-            </div>
-    
-            <div class="mb-3">
-                <label for="date" class="form-label">Select Date</label>
-                <input type="date" id="date" name="date" class="form-control" required>
-            </div>
-    
-            <div class="mb-3">
-                <label for="time-slot" class="form-label">Select Time Slot</label>
-                <select id="time-slot" name="start_time" class="form-select" required>
-                    <option value="">Choose a service and date first</option>
-                </select>
-            </div>
-    
-            <div class="mb-3">
-                <label for="customer-name" class="form-label">Your Name</label>
-                <input type="text" id="customer-name" name="customer_name" class="form-control" required>
-            </div>
-    
-            <div class="mb-3">
-                <label for="customer-email" class="form-label">Your Email</label>
-                <input type="email" id="customer-email" name="customer_email" class="form-control" required>
-            </div>
-    
-            <div class="mb-3">
-                <label class="form-label">Assigned Staff</label>
-                <p id="assigned-staff" class="form-control-plaintext fst-italic text-muted">--</p>
-            </div>
-    
-            <button type="submit" class="btn btn-primary">Book Now</button>
-        </form>
-    
-        <div id="message" class="mt-4"></div>
+          <h2 class="mb-4">Book an Appointment</h2>
+  
+          <form id="booking-form">
+              <div class="mb-3">
+                  <label for="service" class="form-label">Select Service</label>
+                  <select id="service" name="service_id" class="form-select" required>
+                      <option value="">Loading services...</option>
+                  </select>
+              </div>
+      
+              <div class="mb-3">
+                  <label for="date" class="form-label">Select Date</label>
+                  <input type="date" id="date" name="date" class="form-control" required>
+              </div>
+      
+              <div class="mb-3">
+                  <label for="time-slot" class="form-label">Select Time Slot</label>
+                  <select id="time-slot" name="start_time" class="form-select" required>
+                      <option value="">Choose a service and date first</option>
+                  </select>
+              </div>
+      
+              <div class="mb-3">
+                  <label for="customer-name" class="form-label">Your Name</label>
+                  <input type="text" id="customer-name" name="customer_name" class="form-control" required>
+              </div>
+      
+              <div class="mb-3">
+                  <label for="customer-email" class="form-label">Your Email</label>
+                  <input type="email" id="customer-email" name="customer_email" class="form-control" required>
+              </div>
+      
+              <div class="mb-3">
+                  <label class="form-label">Assigned Staff</label>
+                  <p id="assigned-staff" class="form-control-plaintext fst-italic text-muted">--</p>
+              </div>
+      
+              <button type="submit" class="btn btn-primary">Book Now</button>
+          </form>
+      
+          <div id="message" class="mt-4"></div>
+        </div>
       </div>
     </div>
   </div>
