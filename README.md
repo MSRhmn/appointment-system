@@ -1,6 +1,6 @@
-# 📅 Appointment Booking & Scheduling System
+# 🕒 Appointment Booking & Scheduling System
 
-This is a lightweight, single-page appointment booking system designed for small businesses such as salons, spas, clinics, and who ever needs a booking system. Built with **Django (backend)** and **vanilla JavaScript (frontend)**, it provides real-time service availability, staff scheduling, and customer booking—all in one responsive interface.
+This is a lightweight, single-page appointment booking system designed for small businesses such as salons, spas, clinics, and who ever needs a booking system. Built with **Django (Backend)** and **Vanilla JavaScript (Frontend)**, it provides real-time service availability, staff scheduling, and customer booking—all in one responsive interface.
 
 ---
 
@@ -43,7 +43,7 @@ This is a lightweight, single-page appointment booking system designed for small
 
 ---
 
-## 🏗️ Project Structure
+## Project Structure
 ```bash
 ├── admin.py
 ├── models.py
@@ -62,7 +62,7 @@ This is a lightweight, single-page appointment booking system designed for small
 ```
 ---
 
-## 🧪 How to Run Locally
+## How to Run Locally
 
 ```bash
 git clone https://github.com/MSRhmn/appointment-system.git
