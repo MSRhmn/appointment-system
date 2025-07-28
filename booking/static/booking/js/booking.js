@@ -1,3 +1,4 @@
+import { fetchServices, fetchAvailableSlots, bookAppointment } from "./api.js";
 import { addMinutesToTime, timeToMinutes } from "./utils.js";
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -12,8 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let allServices = [];
 
-  fetch("/api/services/")
-    .then((res) => res.json())
+  fetchServices()
     .then((data) => {
       allServices = data.services; // Save full list for later use
   
@@ -50,8 +50,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
     const totalDuration = selectedService.duration_minutes + (selectedService.buffer_minutes || 0);
   
-    fetch(`/api/available-slots/?date=${date}&service_id=${serviceId}`)
-      .then((res) => res.json())
+    fetchAvailableSlots(serviceId, date)
       .then((data) => {
         slotsSelect.innerHTML = "";
   
@@ -131,14 +130,7 @@ document.addEventListener("DOMContentLoaded", () => {
       start_time: selectedSlot.value,
     };
 
-    fetch("/api/book-appointment/", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    })
-      .then((res) => res.json())
+    bookAppointment(payload)
       .then((data) => {
         messageDiv.innerHTML = "";
         if (data.success) {
