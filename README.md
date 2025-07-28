@@ -4,38 +4,38 @@ This is a lightweight, single-page appointment booking system designed for small
 
 ---
 
-## 🚀 Features
+## Features
 
-- 📅 Real-time availability for services and staff
-- 🕒 Dynamic time slot generation with buffer handling
-- 👨‍💼 Custom admin panel for managing services, staff, and schedules
-- 📱 Fully responsive on mobile and desktop
-- 🔒 No authentication required for clients to book
-- 🔧 Minimalist design with clean UX
-- 📤 Ready for future extensions like email notifications or dashboards
+- Real-time availability for services and staff
+- Dynamic time slot generation with buffer handling
+- Custom admin panel for managing services, staff, and schedules
+- Fully responsive on mobile and desktop
+- No authentication required for clients to book
+- Minimalist design with clean UX
+- Ready for future extensions like email notifications or dashboards
 
 ---
 
-## 🖼️ Screenshots
+## Screenshots
 
-### ✅ Full Booking Form (Desktop)
+### Full Booking Form (Desktop)
 ![Booking Desktop](screenshots/booking-desktop.png)
 
-### 📱 Mobile View
+### Mobile View
 ![Booking Mobile](screenshots/booking-mobile.png)
 
-### 🕓 Dynamic Time Slot Loading
+### Dynamic Time Slot Loading
 ![Time Slots](screenshots/time-slots.png)
 
-### 🧑‍💼 Django Admin – Services
+### Django Admin – Services
 ![Admin Services](screenshots/admin-services.png)
 
-### 📋 Django Admin – Bookings
+### Django Admin – Bookings
 ![Admin Bookings](screenshots/admin-bookings.png)
 
 ---
 
-## ⚙️ Tech Stack
+## Tech Stack
 
 - **Backend:** Django 5.2.3 LTS
 - **Frontend:** HTML5, Bootstrap, JavaScript (AJAX implement mostly)
