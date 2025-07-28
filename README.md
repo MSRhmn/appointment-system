@@ -45,7 +45,33 @@ This is a lightweight, single-page appointment booking system designed for small
 
 ## 🏗️ Project Structure
 
+├── admin.py
+├── models.py
+├── static
+│   └── booking
+│       └── js
+│           ├── booking.js
+│           └── utils.js
+├── templates
+│   └── booking
+│       └── booking_form.html
+├── tests.py
+├── urls.py
+├── utils.py
+└── views.py
 
+---
+
+## 🧪 How to Run Locally
+
+```bash
+git clone https://github.com/msrhmn/booking-system.git
+cd booking-system
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py runserver
 
 
 ## License
