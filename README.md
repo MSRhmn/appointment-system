@@ -2,7 +2,6 @@
 
 This is a lightweight, single-page appointment booking system designed for small businesses such as salons, spas, clinics, and who ever needs a booking system. Built with **Django (Backend)** and **Vanilla JavaScript (Frontend)**, it provides real-time service availability, staff scheduling, and customer booking—all in one responsive interface.
 
-<!-- --- -->
 
 ## Features
 
@@ -14,7 +13,6 @@ This is a lightweight, single-page appointment booking system designed for small
 - Minimalist design with clean UX
 - Ready for future extensions like email notifications or dashboards
 
-<!-- --- -->
 
 ## Screenshots
 
@@ -33,7 +31,6 @@ This is a lightweight, single-page appointment booking system designed for small
 ### Django Admin – Bookings
 ![Admin Bookings](screenshots/admin-bookings.png)
 
-<!-- --- -->
 
 ## Tech Stack
 
@@ -41,7 +38,6 @@ This is a lightweight, single-page appointment booking system designed for small
 - **Frontend:** HTML5, Bootstrap, JavaScript (AJAX implement mostly)
 - **Database:** SQLite (Easy to switch to PostgreSQL)
 
-<!-- --- -->
 
 ## Project Structure
 ```bash
@@ -50,6 +46,7 @@ This is a lightweight, single-page appointment booking system designed for small
 ├── static
 │   └── booking
 │       └── js
+│           ├── api.js
 │           ├── booking.js
 │           └── utils.js
 ├── templates
@@ -60,7 +57,6 @@ This is a lightweight, single-page appointment booking system designed for small
 ├── utils.py
 └── views.py
 ```
-<!-- --- -->
 
 ## How to Run Locally
 
