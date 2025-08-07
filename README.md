@@ -64,9 +64,11 @@ This is a lightweight, single-page appointment booking system designed for small
 git clone https://github.com/MSRhmn/appointment-system.git
 cd booking-system
 python/python3 -m venv venv
-source venv/bin/activate
+source venv/bin/activate # # On Windows venv\Scripts\activate
 pip install -r requirements.txt
 python/python3 manage.py migrate
+python/python3 manage.py loaddata sample_data.json # Load sample data to check immediately
+python/python3 manage.py createsuperuser # Create a django admin user to access the admin panel
 python/python3 manage.py runserver
 ```
 
